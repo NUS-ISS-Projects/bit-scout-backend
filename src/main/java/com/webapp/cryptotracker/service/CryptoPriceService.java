@@ -6,25 +6,26 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
 public class CryptoPriceService {
 
-    private static final String COINGECKO_API_URL = "https://api.coingecko.com/api/v3/simple/price";
+    private static final String COINGECKO_API_URL = "https://api.coingecko.com/api/v3/coins/markets";
     private final RestTemplate restTemplate;
 
     public CryptoPriceService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
-    public Map<String, Object> getPrices(String ids, String vsCurrencies) {
-        String url = String.format("%s?ids=%s&vs_currencies=%s", COINGECKO_API_URL, ids, vsCurrencies);
-        ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
+    public List<Map<String, Object>> getPrices(String ids, String vsCurrency) {
+        String url = String.format("%s?vs_currency=%s&ids=%s", COINGECKO_API_URL, vsCurrency, ids);
+        ResponseEntity<List<Map<String, Object>>> response = restTemplate.exchange(
             url,
             HttpMethod.GET,
             null,
-            new ParameterizedTypeReference<Map<String, Object>>() {}
+            new ParameterizedTypeReference<List<Map<String, Object>>>() {}
         );
         return response.getBody();
     }

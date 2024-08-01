@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -17,10 +18,10 @@ public class CryptoPriceController {
     private CryptoPriceService cryptoPriceService;
 
     @GetMapping
-    public Map<String, Object> getPrices(
+    public List<Map<String, Object>> getPrices(
         @RequestParam(name = "ids", required = true) String ids,
-        @RequestParam(name = "vs_currencies", required = true) String vsCurrencies
+        @RequestParam(name = "vs_currency", required = true) String vsCurrency
     ) {
-        return cryptoPriceService.getPrices(ids, vsCurrencies);
+        return cryptoPriceService.getPrices(ids, vsCurrency);
     }
 }

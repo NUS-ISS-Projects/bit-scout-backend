@@ -25,8 +25,11 @@ public class User {
     @ManyToMany
     @LazyCollection(LazyCollectionOption.FALSE)
     private Set<Role> roles;
-    @OneToMany(mappedBy = "userName", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<FlightBookmark> flightBookmarks = new HashSet<>();
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_watchlist", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "crypto_id")
+    private Set<String> watchlist = new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -48,8 +51,8 @@ public class User {
         return userName;
     }
 
-    public void setUserName(String username) {
-        this.userName = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getEmail() {
@@ -90,6 +93,14 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public Set<String> getWatchlist() {
+        return watchlist;
+    }
+
+    public void setWatchlist(Set<String> watchlist) {
+        this.watchlist = watchlist;
     }
 
     @Override
